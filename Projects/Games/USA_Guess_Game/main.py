@@ -40,9 +40,7 @@ while game_on:
         game_on = False
 
     if answer == "Exit":
-        for state in states_list:
-            if state not in guessed:
-                missed.append(state)
+        missed = [state for state in states_list if state not in guessed]
         new_data = pandas.DataFrame(missed)
         new_data.to_csv("missed_states.csv")
         break
