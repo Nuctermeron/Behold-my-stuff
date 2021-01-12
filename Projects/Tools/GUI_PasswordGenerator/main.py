@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import random
 import pyperclip
+import json
 
 """Functions"""
 
@@ -10,13 +11,22 @@ def add_fun():
     web = website_entry.get()
     email = mail_entry.get()
     password = password_entry.get()
+    new_data = {
+        web: {
+            "email":email,
+            "password":password
+        }
+    }
     if len(web) == 0 or len(password) == 0:
         messagebox.showinfo("Please fill all fields")
     else:
         is_ok = messagebox.askokcancel(title=web, message=f"Should be saved?")
         if is_ok:
-            with open("passwords.txt", "a") as file:
-                file.write(f"{web} | {email} | {password}\n")
+            with open("passwords.json", "r") as file:
+                data = json.load(file)
+                data.update(new_data)
+            with open("passwords.json", "w") as file:
+                json.dump(data, file, indent=4)
                 website_entry.delete(0, END)
                 password_entry.delete(0, END)
 
