@@ -1,11 +1,11 @@
 from tkinter import *
+from tkinter import messagebox
 import requests
-import datetime
-
+from datetime import datetime
 
 """Change only these parameters"""
-MY_LAT = 50.264893 #example latitude
-MY_LONG = 19.023781 #example longitude
+MY_LAT = 50.264893  # example latitude
+MY_LONG = 19.023781  # example longitude
 """----------------------------"""
 
 MY_PARAMETERS = {
@@ -46,28 +46,46 @@ class Application:
                                           command=self.iss_location)
         self.get_location_button.grid(column=0, row=4, columnspan=2, padx=10, pady=10)
 
+        self.iss_passing = Button(text="Get Location", width=20, highlightthickness=0,
+                                  command=self.is_iss_flying_over)
+        self.iss_passing.grid(column=0, row=5, columnspan=2, padx=10, pady=10)
         mainloop()
+
+        self.passing_by = ""
+        self.visibility = ""
+        self.passing = False
 
     def iss_location(self):
         response = requests.get(url="http://api.open-notify.org/iss-now.json")
         data = response.json()
         global LONGITUDE_VALUE, LATITUDE_VALUE
-        LONGITUDE_VALUE = data["iss_position"]["longitude"]
-        LATITUDE_VALUE = data["iss_position"]["latitude"]
+        LONGITUDE_VALUE = float(data["iss_position"]["longitude"])
+        LATITUDE_VALUE = float(data["iss_position"]["latitude"])
         self.latitude_entry.delete(0, END)
         self.longitude_entry.delete(0, END)
         self.latitude_entry.insert(0, LONGITUDE_VALUE)
         self.longitude_entry.insert(0, LATITUDE_VALUE)
 
-    # def is_iss_flying_over(self):
-    #     response = requests.get(url="http://api.sunrise-sunset.org/json", params=MY_PARAMETERS)
-    #     data = response.json()
-    #     sunrise = int(data["results"]["sunrise"].split("T")[1].split(":")[0])
-    #     sunset = int(data["results"]["sunset"].split("T")[1].split(":")[0])
-    #     self.iss_location()
-    #     if MY_LAT-5 <= LATITUDE_VALUE <= MY_LAT+5 and MY_LONG-5 <= LONGITUDE_VALUE <= MY_LONG+5:
-    #         return True
+    def is_iss_flying_over(self):
+        response = requests.get(url="http://api.sunrise-sunset.org/json", params=MY_PARAMETERS)
+        data = response.json()
+        sunrise = int(data["results"]["sunrise"].split("T")[1].split(":")[0])
+        sunset = int(data["results"]["sunset"].split("T")[1].split(":")[0])
+        self.iss_location()
+        time_now = datetime.now().hour
+        self.visibility = ""
 
+        if MY_LAT - 5 <= LATITUDE_VALUE <= MY_LAT + 5 and MY_LONG - 5 <= LONGITUDE_VALUE <= MY_LONG + 5:
+            self.passing_by = "ISS is passing by."
+            self.passing = True
+        else:
+            self.passing_by = "ISS is not passing by."
+            self.passing = False
 
+        if self.passing == True:
+            if time_now >= sunset or time_now <= sunrise:
+                self.visibility = "If not cloudy, station should be visible."
+            else:
+                None
 
-
+        return messagebox.showinfo(title= "Info", message= f"{self.passing_by} {self.visibility}")
