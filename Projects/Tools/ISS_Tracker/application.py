@@ -46,7 +46,7 @@ class Application:
                                           command=self.iss_location)
         self.get_location_button.grid(column=0, row=4, columnspan=2, padx=10, pady=10)
 
-        self.iss_passing = Button(text="Get Location", width=20, highlightthickness=0,
+        self.iss_passing = Button(text="Is ISS near my location?", width=20, highlightthickness=0,
                                   command=self.is_iss_flying_over)
         self.iss_passing.grid(column=0, row=5, columnspan=2, padx=10, pady=10)
         mainloop()
