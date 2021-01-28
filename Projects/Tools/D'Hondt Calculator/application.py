@@ -1,5 +1,7 @@
 from tkinter import *
 
+SEATS = 460
+TRESHHOLD = 5
 
 class Application:
 
@@ -31,6 +33,7 @@ class Application:
             entry.grid(column=1, row=i)
             self.entry_party.append(entry)
 
+
         self.entry_score = []
         for i in range(2, 12):
             entry = Entry(justify="left", width=15)
@@ -47,7 +50,10 @@ class Application:
         self.calculate_button.grid(padx=10, pady=10,column=1,row = 12, columnspan=3)
 
     def calculate_seats(self):
-        for entry in self.entry_party:
-            entry.get()
-            print(entry)
+        parties = [entry.get() for entry in self.entry_party]
+        scores = [entry.get() for entry in self.entry_score]
+        party_dict = dict(zip(parties, scores))
+        print(party_dict)
+
+
 
