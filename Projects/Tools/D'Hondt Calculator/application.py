@@ -52,8 +52,10 @@ class Application:
     def calculate_seats(self):
         parties = [entry.get() for entry in self.entry_party]
         scores = [entry.get() for entry in self.entry_score]
-        party_dict = dict(zip(parties, scores))
-        print(party_dict)
+        seats = [entry.get() for entry in self.entry_seats]
+        result = zip(parties, scores, seats)
+        parties_dict = {party:{score:seat} for party,score,seat in result}
+        print(parties_dict)
 
 
 
