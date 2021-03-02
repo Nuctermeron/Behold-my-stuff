@@ -15,8 +15,8 @@ def binary_search(sequence, item):
             begin_index = midpoint + 1
     return None
 
-my_list = [1,5,7,12,15,16,24,32]
-my_item = 1
+my_list = [*range(0,100)]
+my_item = 17
 
 print(binary_search(my_list,my_item))
             

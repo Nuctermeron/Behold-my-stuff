@@ -8,8 +8,8 @@ def twoSums(numlist, target):
             return [h[n], i]
         
 
-numlist = [4,2,3,6]
-target = 6
+numlist = [0,1,3,5,6,9]
+target = 9
 
 result = twoSums(numlist,target)
 print(result)
