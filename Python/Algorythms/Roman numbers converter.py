@@ -12,5 +12,5 @@ class Solution:
             
 
 ob = Solution()
-s = "IV"
+s = "MVIV"
 print(ob.romanToInt(s))
